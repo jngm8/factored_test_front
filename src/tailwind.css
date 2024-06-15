@@ -1,0 +1,21 @@
+/* src/tailwind.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.offscreen {
+    position: absolute;
+    left: -9999px;
+}
+
+.errmsg {
+    background-color: lightpink;
+    color: firebrick;
+    padding: 0.2rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.08em;
+    font-size: larger;
+    text-align: center;
+    border-radius: 0.4rem;
+}
