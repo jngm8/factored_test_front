@@ -1,12 +1,14 @@
 import React, { useRef, useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate  } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import useAuth  from '../hooks/useAuth';
 
 function Login(){
 
     const [username,setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [errMsg, setErrMsg] = useState('');
+    const {setAuth} = useAuth();
 
     const errRef = useRef();
 
@@ -21,19 +23,37 @@ function Login(){
 
     const navigate = useNavigate();
 
-
     async function onSubmit(event){
         event.preventDefault();
 
         try{
-            axios.post('http://localhost:3001/user',{
+            const response = await axios.post('http://localhost:3001/user',{
                 username,
                 password
-            })            
+            });
+            console.log(response.data);
 
-            navigate('/dashboard')
-        } catch (err){
-            console.log(err);
+            setAuth(response.data);
+
+
+            navigate('/dashboard'); 
+
+
+        } catch (error){
+            console.log(error);
+            
+            if (!error.response) {
+                setErrMsg('Network error. Please check your internet connection.');
+            } else if (error.response.status === 400) {
+                setErrMsg('Invalid data. Please check your username and password.');
+            } else if (error.response.status === 401) {
+                setErrMsg('Unauthorized. Please check your credentials.');
+            } else {
+                setErrMsg('An unexpected error occurred. Please try again later.');
+            }
+
+            errRef.current.focus();
+
         }
         
     }
@@ -66,6 +86,7 @@ function Login(){
                         <input 
                         onChange={passwordChange} 
                         value={password}
+                        type='password'
                         className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'
                         />
                 </div>
