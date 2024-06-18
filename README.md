@@ -3,7 +3,7 @@
 1. docker build -t factored_app .
 2. docker run -p 3000:3000 factored_app
 
-## THis are the users with their passwords
+## This are the users with their passwords once the backend is running
 
 | Username | Password  |
 |----------|-----------|
